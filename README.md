@@ -10,3 +10,5 @@ v2.0: distinct warm gold/orange App Store gradient and mint/turquoise Google Pla
 v2.3: Cat shifted left to reveal R; Korean tutorial copy simplified with intentional sentence breaks. Other languages unchanged.
 
 Version 2.4: Korean tutorial and result copy changed to concise, neutral noun-phrase style. Existing layout, animations, assets and store links retained.
+
+Version 2.5: The end-of-round modal shows only the localized end title and result button; all other tutorials and result UI remain unchanged.
