@@ -139,3 +139,25 @@ body{background:#101012!important}
  body.show-result .result{background:#101012;border:0}
 }
 @media(max-height:740px){.native-hud{height:76px;min-height:76px}.rider{height:96px}.game-top{height:42px;min-height:42px}.trade{min-height:52px}.native-progress{height:38px}}
+
+/* v2.0: two distinct luminous gradients and subtle heartbeat on the original logo */
+.heartbeat-logo{transform-origin:50% 52%;animation:logo-heartbeat 2.4s ease-in-out infinite;will-change:transform;filter:drop-shadow(0 0 3px #e8b94d22)}
+@keyframes logo-heartbeat{
+ 0%,17%,34%,100%{transform:scale(1);filter:drop-shadow(0 0 3px #e8b94d22)}
+ 9%{transform:scale(1.055);filter:drop-shadow(0 0 13px #f4c65b6b)}
+ 25%{transform:scale(1.035);filter:drop-shadow(0 0 9px #f4c65b45)}
+}
+body.show-result .result-logo{display:block;width:min(68%,300px);max-height:58px;object-fit:contain;align-self:center;margin:0 auto 2px}
+body.show-result .store-buttons{gap:13px}
+body.show-result .store{position:relative;overflow:hidden;border:1px solid #ffffff50;box-shadow:inset 0 1px 0 #ffffff70,0 9px 24px #0009;transition:transform .18s ease,box-shadow .18s ease,filter .18s ease;isolation:isolate}
+body.show-result .store:before{content:'';position:absolute;inset:-90% auto -90% -65%;width:44%;transform:rotate(22deg);background:linear-gradient(90deg,transparent,#ffffff6b,transparent);transition:left .5s ease;pointer-events:none;z-index:-1}
+body.show-result .store:hover:before,body.show-result .store:focus-visible:before{left:120%}
+body.show-result .ios-store{background:linear-gradient(112deg,#ffe997 0%,#ffc34f 43%,#f19a3c 100%)!important;color:#1b1a22!important}
+body.show-result .android-store{background:linear-gradient(112deg,#b5fff0 0%,#50e2c4 45%,#32a7c4 100%)!important;color:#10212b!important}
+body.show-result .ios-store:hover,body.show-result .android-store:hover{filter:brightness(1.08);box-shadow:inset 0 1px 0 #ffffffa0,0 12px 30px #000b}
+body.show-result .store:active{transform:scale(.975)}
+body.show-result .store b{font-weight:900;letter-spacing:-.4px}
+body.show-result .apple-icon{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI Symbol',sans-serif;font-size:clamp(36px,5.6vh,46px);line-height:1}
+body.show-result .play-icon{font-size:clamp(32px,5vh,43px);color:#08766d;filter:drop-shadow(1px 1px 0 #ffffff66)}
+@media(max-height:750px){body.show-result .result-logo{max-height:40px;width:min(52%,220px)}body.show-result .store-buttons{gap:9px}}
+@media(prefers-reduced-motion:reduce){.heartbeat-logo{animation:none!important;will-change:auto}body.show-result .store:before{display:none}}
