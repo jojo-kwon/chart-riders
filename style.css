@@ -1,1 +1,52 @@
 :root{color-scheme:dark;--bg:#070b13;--panel:#101a2b;--line:#26334b;--muted:#94a5bb;--gold:#f4cc62;--green:#31d5a4;--red:#f36b7e;--white:#f5f7fc;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(ellipse 90% 35% at 50% 0%,#172640 0%,var(--bg) 75%);color:var(--white)}button,select{font:inherit}button{cursor:pointer}button:focus-visible,a:focus-visible,select:focus-visible{outline:3px solid var(--gold);outline-offset:3px}.site{max-width:1020px;margin:auto;padding:0 18px}.top{height:82px;display:flex;align-items:center;justify-content:space-between;gap:12px}.brand{font-weight:950;letter-spacing:1.2px;color:white;text-decoration:none;font-size:19px;white-space:nowrap}.brand span:last-child{color:var(--gold)}.mark{display:inline-grid;place-items:center;width:31px;height:31px;border-radius:9px;background:var(--gold);color:#101827;margin-right:6px}.language{display:flex;gap:9px;align-items:center;background:#111a2a;border:1px solid #34435a;border-radius:12px;padding:7px 10px}.language select{background:transparent;color:white;border:0;font-size:16px;font-weight:700;min-width:110px;max-width:160px}.language option{background:#141d30}.intro{text-align:center;margin:45px auto 32px}.eyebrow{font-size:13px;font-weight:850;letter-spacing:2.2px;color:var(--gold)}h1{font-size:clamp(35px,6vw,66px);line-height:1.08;letter-spacing:-2px;margin:13px auto;max-width:770px}h1 em{display:block;font-style:normal;color:var(--gold)}.intro>p:last-child{color:#b6c3d3;font-size:19px;margin:18px 0 0}.game-shell{max-width:590px;margin:0 auto;background:linear-gradient(145deg,#17253c,#0c1423);border:1px solid #34435b;border-radius:23px;padding:23px;box-shadow:0 22px 72px #0008;position:relative;overflow:hidden}.game-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.game-logo{display:block;color:var(--gold);font-size:22px;font-weight:950;letter-spacing:1.2px}.game-top small{display:block;color:var(--muted);font-size:11px;font-weight:700;margin-top:5px;letter-spacing:.6px}.live-dot{font-size:11px;color:#5ccca7;border:1px solid #2f5c54;border-radius:20px;padding:6px 9px;white-space:nowrap}.stock-title{display:flex;align-items:end;justify-content:space-between;gap:10px;margin:24px 0 12px}.stock-title small,.trade-info small{font-size:12px;letter-spacing:.7px;color:#98aac1;font-weight:800}.stock-title h2{font-size:25px;margin:3px 0 0}.stock-title h2 span{color:var(--gold);font-size:17px}.value{text-align:right}.value b{display:block;font-size:22px;margin-top:5px;font-variant-numeric:tabular-nums}.chart-wrap{border:1px solid #283852;background:#0c1423;border-radius:13px;position:relative;overflow:hidden}.chart-header,.chart-foot{padding:13px 13px 0;display:flex;justify-content:space-between;gap:10px;color:#a1b0c4;font-size:12px;font-weight:700}.chart-foot{padding:0 13px 12px}.chart-foot span:last-child{color:#f6df98}canvas{display:block;width:100%;height:auto;aspect-ratio:720/520}.trade-info{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}.trade-info>div{background:#0c1423;border:1px solid #26344a;border-radius:11px;padding:10px;text-align:center}.trade-info strong{display:block;font-size:17px;margin-top:7px;font-variant-numeric:tabular-nums}.trade-actions{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-top:14px}.trade{border:0;color:#fff;padding:19px 8px;font-weight:950;font-size:22px;border-radius:12px}.buy{background:#168969}.sell{background:#bc4459}.trade:disabled{opacity:.35;cursor:not-allowed}.trade:not(:disabled):active{transform:scale(.98)}.overlay{position:absolute;inset:0;background:#060b15df;display:grid;place-items:center;z-index:5;padding:22px}.overlay.hide,.hide{display:none!important}.dialog{max-width:430px;width:100%;padding:32px 22px;background:#18253b;border:1px solid #536581;border-radius:21px;text-align:center;box-shadow:0 18px 55px #0009}.dialog-pill{font-size:12px;font-weight:950;letter-spacing:1.4px;color:var(--gold)}.dialog h3{font-size:clamp(23px,5vw,31px);margin:19px 0 10px;line-height:1.24}.dialog p{font-size:19px;line-height:1.52;color:#d5deea;margin:0 0 28px}.primary{border:0;background:var(--gold);color:#142035;border-radius:12px;padding:16px 26px;font-size:18px;font-weight:900;min-width:180px}.countdown{position:absolute;inset:0;background:#08111cc9;display:grid;place-items:center;font-size:110px;font-weight:950;color:var(--gold);text-shadow:0 0 35px #f4cc6277}.result{max-width:590px;margin:26px auto 0;border:1px solid #495371;border-radius:23px;background:linear-gradient(165deg,#19273e,#0e1527);padding:32px 20px;text-align:center}.result-label{font-size:12px;color:var(--gold);font-weight:900;letter-spacing:2px}.result h2{font-size:17px;letter-spacing:1px;color:#c1cbda}.result-percent{font-size:58px;font-weight:950;color:var(--green);margin:8px 0}.result-percent.negative{color:var(--red)}.result-balance{font-size:24px;font-weight:800}.iq-box{border-top:1px solid #374861;margin-top:22px;padding-top:24px}.iq-box>p:first-child{font-weight:950;color:var(--gold);font-size:16px;letter-spacing:1.2px}.slots{display:flex;justify-content:center;gap:9px;margin:20px auto}.slot{display:grid;place-items:center;background:#080f1f;border:2px solid #bd9e55;border-radius:12px;width:70px;height:88px;font-weight:950;font-size:56px;color:var(--gold);box-shadow:0 0 16px #dfba4b18 inset}.iq-box h3{font-size:24px;margin:20px 0 8px}.iq-box>p:last-child{color:#c3cddd;line-height:1.5;font-size:17px}.download{text-align:center;margin:60px auto 38px}.download h2{font-size:27px;letter-spacing:-.5px}.download>p{font-size:17px;color:var(--muted)}.store-buttons{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:25px}.store{display:flex;align-items:center;gap:13px;text-align:left;background:#fff;color:#111827;text-decoration:none;border-radius:12px;padding:10px 20px;min-width:184px;min-height:65px}.store-icon{font-size:25px}.store-icon.play-icon{color:#209d8d}.store small{display:block;font-size:11px}.store b{display:block;font-size:19px}.notice{color:#f9be70!important;font-size:14px!important}.sep{margin:0 8px}footer{text-align:center;border-top:1px solid #263247;margin-top:44px;padding:24px 0 45px;color:var(--muted);font-size:13px}footer a{color:#c9d5e5}footer p{line-height:1.5}@media(max-width:600px){.site{padding:0 12px}.top{height:69px}.brand{font-size:15px}.mark{width:26px;height:26px}.language{padding:5px}.language select{min-width:95px;font-size:14px}.intro{margin:29px 0 27px}h1{letter-spacing:-1.3px}.intro>p:last-child{font-size:17px}.game-shell{padding:14px;border-radius:18px}.game-logo{font-size:18px}.stock-title{margin:20px 0 12px}.stock-title h2{font-size:21px}.value b{font-size:18px}.trade{font-size:21px;padding:17px 8px}.dialog{padding:27px 16px}.result-percent{font-size:50px}.download{margin-top:43px}}@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;scroll-behavior:auto!important}}
+
+/* Mobile immersive play mode: language control stays outside the game frame. */
+@media(max-width:700px){
+ html,body{width:100%;height:100%;height:100dvh;overflow:hidden;overscroll-behavior:none}
+ .site{height:100%;height:100dvh;padding:0 8px;display:flex;flex-direction:column;max-width:none}
+ .top{height:48px;min-height:48px;padding:0 5px}
+ .brand{font-size:14px}.mark{width:23px;height:23px}
+ .language{padding:3px 7px}.language select{font-size:14px}
+ main{display:flex;flex:1;min-height:0;flex-direction:column}
+ .intro,.download,footer{display:none}
+ .game-shell{flex:1;min-height:0;width:100%;max-width:none;border-radius:15px;padding:11px 12px 12px;display:flex;flex-direction:column;box-shadow:none}
+ .game-top{flex:0 0 auto;align-items:center}
+ .game-logo{font-size:17px}.game-top small{font-size:10px;margin-top:2px}
+ .live-dot{font-size:10px;padding:4px 7px}
+ .stock-title{margin:10px 0 9px;flex:0 0 auto}
+ .stock-title small,.trade-info small{font-size:11px}
+ .stock-title h2{font-size:21px}.stock-title h2 span{font-size:16px}
+ .value b{font-size:19px;margin-top:3px}
+ .chart-wrap{flex:1;min-height:0;display:flex;flex-direction:column}
+ .chart-header{flex:0 0 auto;padding:9px 10px 4px;font-size:11px}
+ .chart-wrap canvas{flex:1;min-height:0;height:0;aspect-ratio:auto;width:100%}
+ .chart-foot{flex:0 0 auto;padding:3px 10px 8px;font-size:10px}
+ .trade-info{flex:0 0 auto;gap:6px;margin-top:8px}
+ .trade-info>div{padding:7px 3px}.trade-info strong{font-size:16px;margin-top:3px}
+ .trade-actions{flex:0 0 auto;margin-top:8px;gap:8px}
+ .trade{padding:12px 4px;font-size:21px;min-height:53px}
+ .overlay{padding:15px}.dialog{padding:22px 17px}.dialog h3{font-size:25px}.dialog p{font-size:18px}
+ .countdown{font-size:90px}
+ body.show-result .game-shell{display:none}
+ body.show-result main{overflow:hidden}
+ body.show-result .result{display:flex!important;flex:1;min-height:0;overflow:auto;flex-direction:column;justify-content:center;max-width:none;width:100%;margin:0;padding:12px;border-radius:15px}
+ body.show-result .result-label{font-size:11px}
+ body.show-result .result h2{font-size:15px;margin:7px 0}
+ body.show-result .result-percent{font-size:clamp(38px,8vh,55px);margin:3px 0}
+ body.show-result .result-balance{font-size:21px}
+ body.show-result .iq-box{margin-top:12px;padding-top:10px}
+ body.show-result .iq-box>p:first-child{margin:4px 0;font-size:14px}
+ body.show-result .slots{margin:8px auto;gap:7px}
+ body.show-result .slot{height:clamp(54px,10vh,76px);width:57px;font-size:44px}
+ body.show-result .iq-box h3{font-size:20px;margin:8px 0 3px}
+ body.show-result .iq-box>p:last-child{font-size:15px;margin:4px auto}
+ body.show-result .download{display:block;flex:0 0 auto;margin:0;padding:9px 0 7px}
+ body.show-result .download h2{font-size:17px;margin:4px 0}
+ body.show-result .download>p{font-size:12px;margin:3px 0}
+ body.show-result .store-buttons{margin-top:8px;gap:8px}
+ body.show-result .store{min-height:42px;min-width:125px;padding:5px 10px;gap:6px}
+ body.show-result .store-icon{font-size:19px}
+ body.show-result .store small{font-size:9px}
+ body.show-result .store b{font-size:14px}
+}
+@media(max-height:650px) and (max-width:700px){.game-logo{font-size:14px}.stock-title{margin:5px 0}.chart-header{padding:4px 10px}.trade{min-height:44px;padding:7px}.trade-info>div{padding:4px 3px}}
