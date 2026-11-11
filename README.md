@@ -5,3 +5,8 @@ Both store download buttons now link to the official URLs provided by the develo
 
 
 v2.0: distinct warm gold/orange App Store gradient and mint/turquoise Google Play gradient, both full-width and with touch feedback. Original logo gently double-pulses in the native game header and on the result screen. Reduced-motion accessibility supported. Store URLs retained.
+
+
+v2.3: Cat shifted left to reveal R; Korean tutorial copy simplified with intentional sentence breaks. Other languages unchanged.
+
+Version 2.4: Korean tutorial and result copy changed to concise, neutral noun-phrase style. Existing layout, animations, assets and store links retained.

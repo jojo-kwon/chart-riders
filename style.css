@@ -161,3 +161,18 @@ body.show-result .apple-icon{font-family:-apple-system,BlinkMacSystemFont,'Segoe
 body.show-result .play-icon{font-size:clamp(32px,5vh,43px);color:#08766d;filter:drop-shadow(1px 1px 0 #ffffff66)}
 @media(max-height:750px){body.show-result .result-logo{max-height:40px;width:min(52%,220px)}body.show-result .store-buttons{gap:9px}}
 @media(prefers-reduced-motion:reduce){.heartbeat-logo{animation:none!important;will-change:auto}body.show-result .store:before{display:none}}
+
+/* v2.2: paired native-style install controls, enlarged and optically aligned icons */
+body.show-result .store-buttons{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;gap:12px!important;width:100%;margin:0!important}
+body.show-result .store{display:flex!important;flex-direction:row;justify-content:center;align-items:center;gap:11px;min-width:0!important;width:100%;height:clamp(76px,10vh,94px);min-height:0;padding:8px 10px!important;border-radius:18px;text-align:center;white-space:nowrap}
+body.show-result .store-icon{display:flex;align-items:center;justify-content:center;flex:0 0 49px;width:49px;height:53px;line-height:1!important;transform:none}
+body.show-result .apple-icon{font-size:49px!important;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI Symbol',sans-serif;transform:translateY(-1px)}
+body.show-result .play-icon{font-size:43px!important;transform:translateX(1px)}
+body.show-result .store b{font-size:clamp(19px,4.7vw,25px);font-weight:900;letter-spacing:-.6px;line-height:1.1}
+@media(max-width:360px){body.show-result .store{gap:5px;padding:7px 5px!important}body.show-result .store-icon{flex-basis:40px;width:40px}body.show-result .apple-icon{font-size:43px!important}body.show-result .play-icon{font-size:38px!important}body.show-result .store b{font-size:18px}}
+
+/* v2.3: move the cat away from the R and preserve intentional Korean line breaks */
+.rider{position:relative;left:-27px;}
+.dialog p{white-space:pre-line;overflow-wrap:keep-all;word-break:keep-all;line-height:1.55;}
+@media(max-width:700px){.rider{left:-24px}.dialog{max-width:calc(100vw - 50px)}.dialog p{font-size:clamp(16px,4.2vw,19px);}}
+@media(max-width:360px){.rider{left:-18px}.dialog p{font-size:16px}}
