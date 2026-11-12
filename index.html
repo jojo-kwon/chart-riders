@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#111114">
-<meta name="build" content="3.1.1">
+<meta name="build" content="3.4.2">
 <title>Chart Riders | Trading IQ Challenge</title>
 <meta name="description" content="Chart Riders: one chart, one trade. Try the interactive trading demo.">
 <meta property="og:type" content="website">
@@ -28,7 +28,7 @@ gtag('consent','default',{analytics_storage:'granted',ad_storage:'denied',ad_use
 gtag('js',new Date());gtag('config','G-9KHX1WZWRC',{allow_google_signals:false,allow_ad_personalization_signals:false});
 </script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-9KHX1WZWRC"></script>
-<link rel="stylesheet" href="style.css?v=3.1.1">
+<link rel="stylesheet" href="style.css?v=3.4.2">
 </head>
 <body>
 <div class="site">
@@ -100,34 +100,45 @@ gtag('js',new Date());gtag('config','G-9KHX1WZWRC',{allow_google_signals:false,a
    </div>
   </section>
 
-  <!-- Result: brag → hidden IQ → install or replay -->
+  <!-- Result: brag card → hidden IQ → install / challenge a friend -->
   <section id="result" class="result hide" aria-live="polite">
-   <img class="result-logo heartbeat" src="chart_riders_header_logo.webp" alt="Chart Riders" width="1024" height="125">
-   <img id="resultRider" class="result-rider" src="ready_closeup.webp" alt="" width="600" height="650">
-   <div id="resultPercent" class="result-percent">+0.00%</div>
-   <div id="resultBalance" class="result-balance">$10,000.00</div>
-   <p id="resultNote" class="result-note hide"></p>
-   <div class="iq">
-    <p class="iq-title" data-t="iqTitle">YOUR TRADING IQ</p>
-    <button id="slots" class="slots" type="button" data-t-label="spin" aria-label="Tap to spin"><span class="slot">?</span><span class="slot">?</span><span class="slot">?</span></button>
-    <p class="iq-hook" data-t="installPitch">Finish 10 rounds in the app to reveal it</p>
+   <div class="r-hero">
+    <img class="r-logo heartbeat" src="chart_riders_header_logo.webp?v=3.4.2" alt="Chart Riders" width="1024" height="125">
+    <img id="resultRider" class="r-rider" src="ready_closeup.webp?v=3.4.2" alt="" width="600" height="650">
    </div>
+   <div id="verdict" class="verdict"></div>
+   <div id="resultPercent" class="result-percent">+0.00%</div>
+   <div class="r-money"><span id="resultBalance">$10,000</span><span id="resultPnl" class="r-pnl"></span></div>
+
+   <div class="r-card">
+    <div class="r-card-head"><b id="rStock"></b><span id="rPeriod"></span></div>
+    <div class="r-chart"><canvas id="miniChart" role="img" aria-label="Round chart"></canvas></div>
+    <div class="r-stats"><span><small data-t="holdLabel">Buy &amp; hold</small> <b id="rHold">—</b></span><span><small data-t="bestLabel">Perfect timing</small> <b id="rBest">—</b></span></div>
+   </div>
+
+   <div class="cards" aria-label="Trading card tiers">
+    <div class="cards-head"><b data-t="cardTitle">Your Trading Card</b><span data-t="cardSub">26 tiers. Finish 10 rounds in the app to get yours.</span></div>
+    <div id="cardFan" class="card-fan"></div>
+   </div>
+
    <div class="download">
-    <h2 data-t="getGame">UNLOCK YOUR TRADING IQ</h2>
     <div id="storeButtons" class="store-buttons">
      <a id="iosLink" class="store" href="#" aria-label="Download on the App Store">
       <svg class="store-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg>
-      <span class="store-text"><small data-t="dlIos">Download on the</small><b>App Store</b></span>
+      <span class="store-text"><small data-t="cardCta">Get my card in the app</small><b>App Store</b></span>
      </a>
      <a id="androidLink" class="store" href="#" aria-label="Get it on Google Play">
       <svg class="store-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6 3.6c0-1.1 1.2-1.8 2.2-1.2l13 8.4c.9.6.9 1.9 0 2.4l-13 8.4C7.2 22.2 6 21.5 6 20.4z"/></svg>
-      <span class="store-text"><small data-t="dlAndroid">GET IT ON</small><b>Google Play</b></span>
+      <span class="store-text"><small data-t="cardCta">Get my card in the app</small><b>Google Play</b></span>
      </a>
     </div>
     <p id="storeNotice" class="notice hide" data-t="storeNotice">Store link is not ready yet.</p>
     <div class="after-actions">
+     <button id="share" class="share-btn" type="button">
+      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M12 2l4 4h-3v8h-2V6H8l4-4zm-7 9h3v2H6v7h12v-7h-2v-2h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1z"/></svg>
+      <span data-t="challenge">Challenge a friend</span>
+     </button>
      <button id="replay" class="ghost" type="button" data-t="replay">PLAY AGAIN</button>
-     <button id="share" class="ghost" type="button" data-t="share">SHARE</button>
     </div>
    </div>
   </section>
@@ -139,10 +150,10 @@ gtag('js',new Date());gtag('config','G-9KHX1WZWRC',{allow_google_signals:false,a
  </footer>
 </div>
 <div id="toast" class="toast" role="status" aria-live="polite"></div>
-<script src="historical-data.js?v=3.1.1"></script>
-<script src="i18n.js?v=3.1.1"></script>
-<script src="config.js?v=3.1.1"></script>
-<script src="chart.js?v=3.1.1"></script>
-<script src="app.js?v=3.1.1"></script>
+<script src="historical-data.js?v=3.4.2"></script>
+<script src="i18n.js?v=3.4.2"></script>
+<script src="config.js?v=3.4.2"></script>
+<script src="chart.js?v=3.4.2"></script>
+<script src="app.js?v=3.4.2"></script>
 </body>
 </html>

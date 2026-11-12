@@ -48,3 +48,23 @@ Verified against lib/game/game_controller.dart, lib/widgets/candle_chart.dart, l
 - Buttons and store CTA use the app colors (#4FBA8A buy, #D9697D sell)
 - GA4 restored without a cookie banner: Consent Mode denies analytics storage in the EEA, UK and Switzerland (cookieless pings), grants it elsewhere; ad signals off
 - Web-only, intentionally different from the app: first-round tutorial (pauses the game), single independent round, result/install screen, cat not mirrored
+
+## v3.2 — result screen
+- Hero: the rider sits in front of the logo, as in the game header (profit / loss / no-trade pose)
+- Verdict chip by return (🏆 ≥20%, 🚀 ≥5%, 👍 >0%, 😅 >-5%, 🔥 ≤-5%, 🧘 no trade)
+- Round card: stock, real dates, full 120-day chart with the holding zone and B/S points, plus "Buy & hold" and "Perfect timing" returns for the same window
+- Compact Trading IQ ??? strip; App Store / Google Play CTA; gold "Challenge a friend" share button + Play again
+- Share image (1080×1350) uses the same blocks and the same mini-chart renderer
+- Asset URLs bumped to ?v=3.2
+
+## v3.3 — trading-card teaser
+- Result screen shows the app's tier card (layout, frame, tier labels, colours and epithets from trading_card.dart / trading_tier.dart / card_copy.dart)
+- Centre card flips through the 8 tier families (DRIFTER → CHALLENGER) with a holo sheen; IQ, balance and return stay "???" and a "🔒 In the app" badge invites the install
+- Store buttons read "Get my card in the app"
+- Tier artworks: card_<cell>.webp (8 files, cropped from trading_art_*_v3.png), kept in the root so no folder upload is needed
+
+## v3.4 — one-screen result
+- Result screen fits one phone screen without scrolling (checked 360×640, 375×667, 390×844, 412×915); the card fan takes the leftover height and the cards are sized in JS
+- Removed: separate Trading IQ ??? strip (the tier card already carries IQ ???), stats tiles folded into one line inside the round card, "Can you beat my score?" line
+- Share image: hero, verdict, return, money, round card with buy & hold / perfect timing, site URL — no IQ row, no challenge line
+- Asset URLs bumped to ?v=3.4
