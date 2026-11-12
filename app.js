@@ -215,7 +215,7 @@ function render(){
  $('buy').disabled=G.phase!=='racing'||G.paused;
  $('sell').disabled=G.phase!=='holding'||G.paused;
  const pose=poseAsset();
- if(pose!==lastPose){lastPose=pose;const img=$('rider');img.src=pose+'.webp';img.classList.remove('pop');void img.offsetWidth;img.classList.add('pop');}
+ if(pose!==lastPose){lastPose=pose;const img=$('rider');img.src=pose+'.webp?v=3.1.1';img.classList.remove('pop');void img.offsetWidth;img.classList.add('pop');}
  chart.setData(G.completed,G.partial,G.buyPrice,G.sellPrice);
 }
 
@@ -275,7 +275,7 @@ function fillResult(){
  const note=$('resultNote');
  note.textContent=G.buyPrice==null?t('noTradeSub'):G.autoSold?t('autoSold'):'';
  note.classList.toggle('hide',!note.textContent);
- $('resultRider').src=poseAsset()+'.webp';
+ $('resultRider').src=poseAsset()+'.webp?v=3.1.1';
 }
 function showResult(){
  stopPostSellPlayback();stopLoop();

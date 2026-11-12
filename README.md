@@ -31,7 +31,7 @@ Browser demo of the Chart Riders iOS game: one round, then install or replay.
 - GA4 removed
 
 ## Deploy
-Upload all files to the repository root, replacing existing files. Delete files that are no longer used
+Upload all files to the repository root, replacing existing files. index.html loads every script/stylesheet with ?v=<build>; bump it on each release so browsers never mix a new index.html with cached old files. Delete files that are no longer used
 (old .png images from v2.7).
 
 ## v3.1 — aligned with the iOS source (ChartRiders_iOS_Full)
