@@ -84,3 +84,9 @@ Verified against lib/game/game_controller.dart, lib/widgets/candle_chart.dart, l
 ## v3.7 — language-aware links
 - The address bar follows the game language (history.replaceState): a Korean device opening the root URL ends up on …/ko.html, so the browser's own Share / Copy link sends the Korean preview; switching the language selector updates it too
 - New link-share button next to the language selector shares the current language page (clipboard fallback)
+
+## v3.8 — sound (from the app)
+- sound.js ports SoundService / MusicService: button tap (Buy, Sell, Resume, Play again), countdown tick each second of the warm-up, correct/wrong 140 ms after the round ends (profit → correct), streak milestone when the result screen opens at +20% or more
+- Background music: 96-second loop cut from chart_riders_bgm.mp3 (bgm.mp3, ~0.96 MB, app volume 0.45), fetched only when the game starts with sound on; pauses with the tab
+- Sound toggle (speaker icon) next to the link-share button, remembered per device; audio starts only after the first tap (browser autoplay rules)
+- Effects converted to small MP3s (sfx_*.mp3, 7–19 KB each)

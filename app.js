@@ -85,11 +85,11 @@ function advanceTick(isHistory){
 
 /* ---------- loop: Timer.periodic equivalents driven by requestAnimationFrame ---------- */
 function loop(now){
- const dt=Math.min(now-G.last,MAX_DT);G.last=now;
+ const dt=Math.max(0,Math.min(now-G.last,MAX_DT));G.last=now;
  if(!G.paused){
   if(G.phase==='preRace'){
    G.elapsed+=dt;G.acc+=dt;
-   G.startCountdown=Math.max(0,5-Math.floor(G.elapsed/1000));
+   const cd=Math.max(0,5-Math.floor(G.elapsed/1000));if(cd!==G.startCountdown&&cd>0)window.Sound&&Sound.play('countdownTick');G.startCountdown=cd;
    while(G.acc>=HISTORY_TICK_MS&&G.phase==='preRace'){G.acc-=HISTORY_TICK_MS;advanceTick(true);}
   }else if(G.phase==='racing'||G.phase==='holding'||G.watching){
    G.acc+=dt;
@@ -112,6 +112,7 @@ function stopLoop(){if(G.raf)cancelAnimationFrame(G.raf);G.raf=0;}
 /* ---------- game actions ---------- */
 function startPreRace(){
  hideModal();
+ window.Sound&&Sound.startMusic();window.Sound&&Sound.play('countdownTick');
  G.phase='preRace';G.elapsed=0;G.acc=0;G.startCountdown=5;
  prepareCurrentCandleTicks();
  startLoop();
@@ -122,6 +123,7 @@ function startRace(){
 }
 function buy(){
  if(G.phase!=='racing')return;
+ window.Sound&&Sound.play('buttonTap');
  G.buyPrice=G.currentPrice;G.buyIndex=G.candleIndex;G.phase='holding';
  render();
  if(G.firstRun){   // web tutorial, first round only; the game is frozen while it is open
@@ -133,7 +135,7 @@ function sell(automatic=false){
  if(G.phase!=='holding'||G.buyPrice==null)return;
  G.sellPrice=G.currentPrice;G.sellIndex=Math.min(G.candleIndex,TOTAL-1);G.autoSold=automatic;
  G.balance*=G.sellPrice/G.buyPrice;
- if(!automatic)showPose('sell_closeup',520);
+ if(!automatic){showPose('sell_closeup',520);window.Sound&&Sound.play('buttonTap');}
  finishRound(!automatic);
 }
 function finishAtEnd(){
@@ -141,6 +143,7 @@ function finishAtEnd(){
  if(G.phase==='holding')sell(true);else finishRound(false);
 }
 function finishRound(continueChart){
+ setTimeout(()=>{if(G.phase==='finished')window.Sound&&Sound.play(roundPnl()>0?'correct':'wrong');},140);
  G.watching=continueChart&&G.candleIndex<G.candles.length;
  G.phase='finished';
  showFinish();
@@ -150,9 +153,11 @@ function stopPostSellPlayback(){G.watching=false;}
 /* ---------- pause (app lifecycle → manual resume) ---------- */
 function pause(){
  if(G.paused||!isRunning())return;
+ window.Sound&&Sound.stopAll();
  G.paused=true;$('pauseOverlay').classList.remove('hide');
 }
 function resume(){
+ window.Sound&&Sound.play('buttonTap');
  $('pauseOverlay').classList.add('hide');
  if(!G.paused)return;
  G.paused=false;G.last=performance.now();
@@ -216,7 +221,7 @@ function render(){
  $('buy').disabled=G.phase!=='racing'||G.paused;
  $('sell').disabled=G.phase!=='holding'||G.paused;
  const pose=poseAsset();
- if(pose!==lastPose){lastPose=pose;const img=$('rider');img.src=pose+'.webp?v=3.7';img.classList.remove('pop');void img.offsetWidth;img.classList.add('pop');}
+ if(pose!==lastPose){lastPose=pose;const img=$('rider');img.src=pose+'.webp?v=3.8';img.classList.remove('pop');void img.offsetWidth;img.classList.add('pop');}
  chart.setData(G.completed,G.partial,G.buyPrice,G.sellPrice);
 }
 
@@ -337,11 +342,12 @@ function fillResult(){
  $('rStock').textContent=`${G.stock.name} · ${G.stock.ticker}`;$('rPeriod').textContent=st.period;
  const h=$('rHold');h.textContent=signed(st.hold);h.className=st.hold>0?'up':st.hold<0?'down':'';
  const b=$('rBest');b.textContent=signed(st.best);b.className='up';
- const rider=$('resultRider');rider.src=resultPose()+'.webp?v=3.7';rider.classList.remove('pop');void rider.offsetWidth;rider.classList.add('pop');
+ const rider=$('resultRider');rider.src=resultPose()+'.webp?v=3.8';rider.classList.remove('pop');void rider.offsetWidth;rider.classList.add('pop');
  requestAnimationFrame(paintMini);
 }
 function showResult(){
  stopPostSellPlayback();stopLoop();
+ window.Sound&&Sound.play(G.buyPrice!=null&&roundPct()>=20?'streakMilestone':'buttonTap');
  G.phase='result';
  document.body.classList.add('show-result');$('result').classList.remove('hide');
  fillResult();
@@ -356,9 +362,9 @@ function cutPath(x,y,w,h,c){return `${x+c},${y} ${x+w-c},${y} ${x+w},${y+c} ${x+
 function cardHTML([idx,label,color,cell],holo){
  const ep=((D[G.lang]||D.en).epithets||D.en.epithets)[idx];
  return `<div class="tcard" style="--accent:${color};--accent-dark:${darken(color,.65)}">
-  <img class="tc-logo" src="chart_riders_header_logo.webp?v=3.7" alt="">
+  <img class="tc-logo" src="chart_riders_header_logo.webp?v=3.8" alt="">
   <div class="tc-tier"><span>${label}</span><i class="tc-gem"></i></div>
-  <div class="tc-art"><img src="card_${cell}.webp?v=3.7" alt=""></div>
+  <div class="tc-art"><img src="card_${cell}.webp?v=3.8" alt=""></div>
   <div class="tc-title">${ep}</div>
   <div class="tc-iq"><span>TRADING IQ</span><b>???</b></div>
   <div class="tc-metrics"><div><b>???</b><small>${t('cBalance')}</small></div><div><b>???</b><small>${t('cReturn')}</small></div></div>
@@ -389,7 +395,7 @@ function renderCards(){
   <div class="card-slot side right">${cardHTML(CARD_TIERS[6])}</div>
   <div class="card-slot center"><div id="cardFlip" class="card-flip">${cardHTML(CARD_TIERS[cardIdx],true)}</div><span class="lock">🔒 ${t('cardLock')}</span></div>`;
  sizeCards();
- CARD_TIERS.forEach(c=>{const i=new Image();i.src=`card_${c[3]}.webp?v=3.7`;});
+ CARD_TIERS.forEach(c=>{const i=new Image();i.src=`card_${c[3]}.webp?v=3.8`;});
  if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
  cardTimer=setInterval(()=>{
   const flip=$('cardFlip');if(!flip){clearInterval(cardTimer);return;}
@@ -398,6 +404,7 @@ function renderCards(){
  },1600);
 }
 function replay(){
+ window.Sound&&Sound.play('buttonTap');
  clearInterval(cardTimer);
  document.body.classList.remove('show-result');
  $('result').classList.add('hide');$('storeNotice').classList.add('hide');
@@ -435,7 +442,7 @@ async function makeShareImage(){
  const g=x.createRadialGradient(W/2,300,40,W/2,300,720);g.addColorStop(0,accent+'40');g.addColorStop(1,'#11111400');x.fillStyle=g;x.fillRect(0,0,W,H);
  // diagonal racing stripes
  x.save();x.globalAlpha=.05;x.fillStyle='#fff';for(let i=-4;i<12;i++){x.beginPath();x.moveTo(i*140,0);x.lineTo(i*140+60,0);x.lineTo(i*140-340,H);x.lineTo(i*140-400,H);x.fill();}x.restore();
- const [logo,cat]=await Promise.all([loadImg('chart_riders_header_logo.webp?v=3.7'),loadImg(resultPose()+'.webp?v=3.7')]);
+ const [logo,cat]=await Promise.all([loadImg('chart_riders_header_logo.webp?v=3.8'),loadImg(resultPose()+'.webp?v=3.8')]);
  // hero: rider in front of the logo
  const lw=860,lh=lw*logo.height/logo.width;x.drawImage(logo,(W-lw)/2,96,lw,lh);
  const ch=300,cw=Math.round(ch*cat.width/cat.height);
@@ -542,6 +549,9 @@ $('resume').addEventListener('click',resume);
 $('replay').addEventListener('click',()=>{track('demo_replay');replay();});
 $('share').addEventListener('click',share);
 $('linkShare').addEventListener('click',shareLink);
+function paintSound(){const on=!window.Sound||Sound.enabled;$('soundOn').classList.toggle('hide',!on);$('soundOff').classList.toggle('hide',on);$('soundToggle').setAttribute('aria-pressed',String(on));}
+$('soundToggle').addEventListener('click',()=>{if(!window.Sound)return;Sound.unlock();Sound.setEnabled(!Sound.enabled);if(Sound.enabled)Sound.play('buttonTap');paintSound();track('sound_toggle',{on:Sound.enabled});});
+paintSound();
 $('lang').addEventListener('change',e=>applyLang(e.target.value,true));
 addEventListener('resize',()=>{if(G.phase==='result'){paintMini();sizeCards();}});
 const chart=new CandleChart($('chart'),HISTORY_DAYS,G.stock?G.stock.market:'NASDAQ');
