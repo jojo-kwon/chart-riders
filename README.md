@@ -68,3 +68,15 @@ Verified against lib/game/game_controller.dart, lib/widgets/candle_chart.dart, l
 - Removed: separate Trading IQ ??? strip (the tier card already carries IQ ???), stats tiles folded into one line inside the round card, "Can you beat my score?" line
 - Share image: hero, verdict, return, money, round card with buy & hold / perfect timing, site URL — no IQ row, no challenge line
 - Asset URLs bumped to ?v=3.4
+
+## v3.5 — link previews by language
+- index.html = English preview ("Are you a born trader?", og-en-v1.jpg); ko.html = Korean preview ("타고난 트레이딩 자질 테스트", og-ko-v1.jpg)
+- Both pages run the same game; the in-game language still follows the visitor's device
+- Share button: Korean players share ko.html, everyone else shares the root URL
+- ko.html must stay identical to index.html except the <head> meta tags — regenerate it whenever index.html changes
+
+## v3.6 — six link-preview pages
+- index.html (English, default), ko.html, ja.html, fr.html, es.html, zh.html; each has its own title, description and og-<lang>.jpg
+- Pages differ only in <head>; the game and its auto language detection are the same everywhere
+- Share button sends the page in the player's language (English → root URL)
+- Pages and preview images are generated together by a build script, so later changes are applied to all six at once
