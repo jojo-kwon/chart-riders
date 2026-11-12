@@ -216,7 +216,7 @@ function render(){
  $('buy').disabled=G.phase!=='racing'||G.paused;
  $('sell').disabled=G.phase!=='holding'||G.paused;
  const pose=poseAsset();
- if(pose!==lastPose){lastPose=pose;const img=$('rider');img.src=pose+'.webp?v=3.6';img.classList.remove('pop');void img.offsetWidth;img.classList.add('pop');}
+ if(pose!==lastPose){lastPose=pose;const img=$('rider');img.src=pose+'.webp?v=3.7';img.classList.remove('pop');void img.offsetWidth;img.classList.add('pop');}
  chart.setData(G.completed,G.partial,G.buyPrice,G.sellPrice);
 }
 
@@ -337,7 +337,7 @@ function fillResult(){
  $('rStock').textContent=`${G.stock.name} · ${G.stock.ticker}`;$('rPeriod').textContent=st.period;
  const h=$('rHold');h.textContent=signed(st.hold);h.className=st.hold>0?'up':st.hold<0?'down':'';
  const b=$('rBest');b.textContent=signed(st.best);b.className='up';
- const rider=$('resultRider');rider.src=resultPose()+'.webp?v=3.6';rider.classList.remove('pop');void rider.offsetWidth;rider.classList.add('pop');
+ const rider=$('resultRider');rider.src=resultPose()+'.webp?v=3.7';rider.classList.remove('pop');void rider.offsetWidth;rider.classList.add('pop');
  requestAnimationFrame(paintMini);
 }
 function showResult(){
@@ -356,9 +356,9 @@ function cutPath(x,y,w,h,c){return `${x+c},${y} ${x+w-c},${y} ${x+w},${y+c} ${x+
 function cardHTML([idx,label,color,cell],holo){
  const ep=((D[G.lang]||D.en).epithets||D.en.epithets)[idx];
  return `<div class="tcard" style="--accent:${color};--accent-dark:${darken(color,.65)}">
-  <img class="tc-logo" src="chart_riders_header_logo.webp?v=3.6" alt="">
+  <img class="tc-logo" src="chart_riders_header_logo.webp?v=3.7" alt="">
   <div class="tc-tier"><span>${label}</span><i class="tc-gem"></i></div>
-  <div class="tc-art"><img src="card_${cell}.webp?v=3.6" alt=""></div>
+  <div class="tc-art"><img src="card_${cell}.webp?v=3.7" alt=""></div>
   <div class="tc-title">${ep}</div>
   <div class="tc-iq"><span>TRADING IQ</span><b>???</b></div>
   <div class="tc-metrics"><div><b>???</b><small>${t('cBalance')}</small></div><div><b>???</b><small>${t('cReturn')}</small></div></div>
@@ -389,7 +389,7 @@ function renderCards(){
   <div class="card-slot side right">${cardHTML(CARD_TIERS[6])}</div>
   <div class="card-slot center"><div id="cardFlip" class="card-flip">${cardHTML(CARD_TIERS[cardIdx],true)}</div><span class="lock">🔒 ${t('cardLock')}</span></div>`;
  sizeCards();
- CARD_TIERS.forEach(c=>{const i=new Image();i.src=`card_${c[3]}.webp?v=3.6`;});
+ CARD_TIERS.forEach(c=>{const i=new Image();i.src=`card_${c[3]}.webp?v=3.7`;});
  if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
  cardTimer=setInterval(()=>{
   const flip=$('cardFlip');if(!flip){clearInterval(cardTimer);return;}
@@ -406,6 +406,22 @@ function replay(){
  requestAnimationFrame(()=>{chart.resize();startPreRace();});
 }
 
+/* ---------- per-language page URLs (index.html = English) ---------- */
+function pageFile(lang){return lang==='en'?'':lang+'.html';}
+function pageUrl(lang){const base=(CFG.siteUrl||location.href.split('#')[0].replace(/[^/]*$/,'')).replace(/\/?$/,'/');return base+pageFile(lang);}
+// Keep the address bar on the page that matches the language, so the browser's own share/copy link carries the right preview.
+function syncPageUrl(){
+ if(!/^https?:$/.test(location.protocol)||!history.replaceState)return;
+ const dir=location.pathname.replace(/[^/]*$/,''),want=dir+pageFile(G.lang);
+ if(location.pathname!==want){try{history.replaceState(history.state,'',want+location.search+location.hash);}catch(_){}}
+}
+async function shareLink(){
+ const url=pageUrl(G.lang),title=document.querySelector('meta[property="og:title"]')?.content||'Chart Riders';
+ track('link_share_click');
+ if(navigator.share){try{await navigator.share({title,url});return;}catch(e){if(e&&e.name==='AbortError')return;}}
+ try{await navigator.clipboard.writeText(url);toast(t('copied'));}catch(_){toast(url);}
+}
+
 /* ---------- share ---------- */
 function loadImg(src){return new Promise((res,rej)=>{const i=new Image();i.onload=()=>res(i);i.onerror=rej;i.src=src;});}
 function roundRectPath(x,X,Y,w,h,r){x.beginPath();x.moveTo(X+r,Y);x.arcTo(X+w,Y,X+w,Y+h,r);x.arcTo(X+w,Y+h,X,Y+h,r);x.arcTo(X,Y+h,X,Y,r);x.arcTo(X,Y,X+w,Y,r);x.closePath();}
@@ -419,7 +435,7 @@ async function makeShareImage(){
  const g=x.createRadialGradient(W/2,300,40,W/2,300,720);g.addColorStop(0,accent+'40');g.addColorStop(1,'#11111400');x.fillStyle=g;x.fillRect(0,0,W,H);
  // diagonal racing stripes
  x.save();x.globalAlpha=.05;x.fillStyle='#fff';for(let i=-4;i<12;i++){x.beginPath();x.moveTo(i*140,0);x.lineTo(i*140+60,0);x.lineTo(i*140-340,H);x.lineTo(i*140-400,H);x.fill();}x.restore();
- const [logo,cat]=await Promise.all([loadImg('chart_riders_header_logo.webp?v=3.6'),loadImg(resultPose()+'.webp?v=3.6')]);
+ const [logo,cat]=await Promise.all([loadImg('chart_riders_header_logo.webp?v=3.7'),loadImg(resultPose()+'.webp?v=3.7')]);
  // hero: rider in front of the logo
  const lw=860,lh=lw*logo.height/logo.width;x.drawImage(logo,(W-lw)/2,96,lw,lh);
  const ch=300,cw=Math.round(ch*cat.width/cat.height);
@@ -457,8 +473,7 @@ async function makeShareImage(){
  return new Promise(res=>c.toBlob(res,'image/png'));
 }
 async function share(){
- const base=(CFG.siteUrl||location.href.split('#')[0].replace(/[^/]*$/,'')).replace(/\/?$/,'/');
- const url=G.lang==='en'?base:base+G.lang+'.html';   // share the preview page in the player's language (index.html = English)
+ const url=pageUrl(G.lang);   // share the preview page in the player's language
  const text=`${verdict().join(' ')} · `+t('shareText').replace('{r}',G.buyPrice!=null?pct(roundPct()):t('noTrade'));
  track('demo_share_click');
  if(navigator.share){
@@ -486,6 +501,7 @@ function applyLang(next,remember){
  document.querySelectorAll('[data-t]').forEach(el=>el.textContent=t(el.dataset.t));
  document.querySelectorAll('[data-t-label]').forEach(el=>el.setAttribute('aria-label',t(el.dataset.tLabel)));
  $('headline').innerHTML=`${t('headline1')} <em>${t('headline2')}</em>`;
+ syncPageUrl();
  if(G.phase==='intro')showModal('ready','instruction1','start',()=>{track('demo_start');startPreRace();});
  if(G.phase==='finished')showFinish();
  if(G.phase==='result'){fillResult();renderCards();}
@@ -525,6 +541,7 @@ $('nextBtn').addEventListener('click',()=>{if(G.phase!=='finished')return;track(
 $('resume').addEventListener('click',resume);
 $('replay').addEventListener('click',()=>{track('demo_replay');replay();});
 $('share').addEventListener('click',share);
+$('linkShare').addEventListener('click',shareLink);
 $('lang').addEventListener('change',e=>applyLang(e.target.value,true));
 addEventListener('resize',()=>{if(G.phase==='result'){paintMini();sizeCards();}});
 const chart=new CandleChart($('chart'),HISTORY_DAYS,G.stock?G.stock.market:'NASDAQ');

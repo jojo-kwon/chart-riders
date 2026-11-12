@@ -26,7 +26,7 @@ window.CHART_RIDERS_I18N = {
   noTradeSub:'이번 판은 관망',
   iqTitle:'나의 매매 IQ',installPitch:'10판 완료 시 매매 IQ 공개',spin:'탭해서 돌리기',
   getGame:'매매 IQ 확인',dlIos:'다운로드',dlAndroid:'다운로드',storeNotice:'스토어 링크 준비 중',
-  replay:'한 판 더',share:'결과 공유',copied:'공유 문구 복사 완료',
+  replay:'한 판 더',share:'결과 공유',copied:'복사 완료',
   shareText:'차트라이더스 한 판 수익률 {r}',
   disclaimer:'차트라이더스 앱의 실제 과거 주가 사용 · 모든 매매는 가상 거래',support:'고객지원 · 개인정보처리방침'
  },

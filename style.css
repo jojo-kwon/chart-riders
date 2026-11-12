@@ -18,7 +18,9 @@ a{color:inherit}
 
 /* ---------- page frame ---------- */
 .site{max-width:560px;margin:0 auto;padding:0 10px env(safe-area-inset-bottom);min-height:100dvh;display:flex;flex-direction:column}
-.top{height:var(--top);flex:none;display:flex;align-items:center;justify-content:flex-end}
+.top{height:var(--top);flex:none;display:flex;align-items:center;justify-content:flex-end;gap:8px}
+.link-share{display:grid;place-items:center;width:36px;height:32px;border-radius:10px;border:1px solid #38383e;background:#202025;color:#d6d6dc}
+.link-share:active{transform:scale(.95)}
 .language{display:flex;align-items:center;gap:6px;background:#202025;border:1px solid #38383e;border-radius:12px;padding:4px 8px}
 .language select{background:transparent;border:0;font-size:14px;font-weight:700;min-width:96px}
 .language option{background:#202025}

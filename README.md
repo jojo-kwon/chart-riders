@@ -80,3 +80,7 @@ Verified against lib/game/game_controller.dart, lib/widgets/candle_chart.dart, l
 - Pages differ only in <head>; the game and its auto language detection are the same everywhere
 - Share button sends the page in the player's language (English → root URL)
 - Pages and preview images are generated together by a build script, so later changes are applied to all six at once
+
+## v3.7 — language-aware links
+- The address bar follows the game language (history.replaceState): a Korean device opening the root URL ends up on …/ko.html, so the browser's own Share / Copy link sends the Korean preview; switching the language selector updates it too
+- New link-share button next to the language selector shares the current language page (clipboard fallback)
