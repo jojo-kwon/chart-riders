@@ -1,48 +1,147 @@
-<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#101012">
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#101012">
 <title>Chart Riders | Trading IQ Challenge</title>
 <meta name="description" content="Chart Riders: one chart, one trade. Try the interactive trading demo.">
-<!-- Social preview. Replace og:image / og:url with absolute URLs once the site domain is final. -->
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Chart Riders">
 <meta property="og:title" content="Chart Riders | Think You Can Beat the Market?">
 <meta property="og:description" content="One chart. One trade. Try the demo, then find your Trading IQ in the app.">
-<meta property="og:image" content="og-image.jpg">
+<meta property="og:url" content="https://jojo-kwon.github.io/chart-riders/">
+<meta property="og:image" content="https://jojo-kwon.github.io/chart-riders/og-image.jpg">
 <meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="og-image.jpg">
+<meta name="twitter:image" content="https://jojo-kwon.github.io/chart-riders/og-image.jpg">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preload" as="image" href="ready_closeup.webp">
-<link rel="stylesheet" href="style.css"></head><body>
-<div class="site"><header class="top"><div class="language"><label for="lang">🌐</label><select id="lang" aria-label="Choose language"><option value="en">English</option><option value="ko">한국어</option><option value="ja">日本語</option><option value="fr">Français</option><option value="es">Español</option><option value="zh">繁體中文</option></select></div></header>
-<main><section class="intro"><p class="eyebrow" data-t="eyebrow">THE TRADING IQ CHALLENGE</p><h1>Think You Can <em>Beat the Market?</em></h1><p data-t="subhead">One chart. One trade. Try it before you download.</p></section>
-<section class="game-shell" aria-label="Chart Riders demo"><div class="game-top"><span class="native-back">‹</span><img class="game-logo-image heartbeat-logo" src="chart_riders_header_logo.webp" alt="Chart Riders" width="1024" height="125"><span class="native-settings">☷</span></div><div class="native-hud"><div class="round"><small id="roundLabel">ROUND</small><strong>1/10</strong></div><img class="rider" src="ready_closeup.webp" alt="" width="600" height="650"><div class="hud-balance"><strong id="nativeBalance">$10,000.00</strong><span id="nativeReturn">0.00%</span></div></div>
-<div class="stock-title"><h2 id="stockName">NVIDIA <span>NVDA · NASDAQ</span></h2></div><div class="native-date"><span id="nativeDate">—</span><span> · </span><span id="chartStatus">Ready</span></div>
-<div class="chart-wrap"><canvas id="chart" aria-label="Candlestick chart"></canvas><div class="chart-foot"><span class="ma-legend"><i></i> MA 5 <i></i> MA 20</span></div><div id="countdown" class="countdown hide">5</div></div>
-<div class="native-progress"><div class="progress-track"><span id="progressFill"></span></div><div class="progress-caption" id="progressCaption">Ready</div></div>
-<div class="trade-actions"><button id="buy" class="trade buy" disabled data-t="buy">BUY</button><button id="sell" class="trade sell" disabled data-t="sell">SELL</button></div>
-<div id="overlay" class="overlay"><div class="dialog" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="dialog-pill" data-t="tutorial">QUICK TUTORIAL</div><h3 id="modalTitle"></h3><p id="modalMessage"></p><button id="advance" class="primary"></button></div></div>
-</section>
-<section id="result" class="result hide" aria-live="polite">
-<img class="result-logo heartbeat-logo" src="chart_riders_header_logo.webp" alt="Chart Riders" width="1024" height="125"><img class="result-rider" src="ready_closeup.webp" alt="" aria-hidden="true" width="600" height="650">
-<div id="resultPercent" class="result-percent">+0.00%</div>
-<div id="resultBalance" class="result-balance">$10,000.00</div>
-<p id="resultNote" class="result-note hide"></p>
-<div class="iq-box">
-<p data-t="iqTitle">YOUR TRADING IQ</p>
-<div class="slots" aria-label="Unknown Trading IQ"><span class="slot">?</span><span class="slot">?</span><span class="slot">?</span></div>
-<p class="iq-hook" data-t="installPitch">Install Chart Riders and complete 10 rounds to find out!</p>
+<!-- Google Analytics 4. No cookie banner: visitors in the EEA, UK and Switzerland get cookieless pings only. -->
+<script>
+window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+gtag('consent','default',{analytics_storage:'denied',ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',
+ region:['AT','BE','BG','HR','CY','CZ','DK','EE','FI','FR','DE','GR','HU','IE','IT','LV','LT','LU','MT','NL','PL','PT','RO','SK','SI','ES','SE','IS','LI','NO','GB','CH']});
+gtag('consent','default',{analytics_storage:'granted',ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied'});
+gtag('js',new Date());gtag('config','G-9KHX1WZWRC',{allow_google_signals:false,allow_ad_personalization_signals:false});
+</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9KHX1WZWRC"></script>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="site">
+ <header class="top">
+  <h1 id="headline" class="sr-only">Think You Can <em>Beat the Market?</em></h1>
+  <div class="language"><label for="lang" aria-hidden="true">🌐</label>
+   <select id="lang" aria-label="Language"><option value="en">English</option><option value="ko">한국어</option><option value="ja">日本語</option><option value="fr">Français</option><option value="es">Español</option><option value="zh">繁體中文</option></select>
+  </div>
+ </header>
+
+ <main>
+  <!-- Game: ported from the iOS game screen (lib/main.dart) -->
+  <section class="game" aria-label="Chart Riders demo">
+   <div class="header">
+    <div class="logo-row">
+     <span class="deco" aria-hidden="true">‹</span>
+     <img class="game-logo" src="chart_riders_header_logo.webp" alt="Chart Riders" width="1024" height="125">
+     <span class="deco" aria-hidden="true"><svg viewBox="0 0 24 24" width="21" height="21"><path fill="currentColor" d="M3 17v2h6v-2H3zM3 5v2h10V5H3zm10 16v-2h8v-2h-8v-2h-2v6h2zM7 9v2H3v2h4v2h2V9H7zm14 4v-2H11v2h10zm-6-4h2V7h4V5h-4V3h-2v6z"/></svg></span>
+    </div>
+    <div class="hud-row">
+     <div class="hud-round"><small id="roundLabel">ROUND</small><strong>1/10</strong></div>
+     <div class="hud-balance"><strong id="nativeBalance">$10,000</strong><span id="nativeReturn">0.00%</span></div>
+    </div>
+    <img id="rider" class="rider" src="ready_closeup.webp" alt="" width="600" height="650">
+   </div>
+   <div class="stock-line"><span id="stockName" class="stock-name">—</span><span id="stockMeta" class="stock-meta"></span></div>
+   <div id="dateLine" class="date-line">—</div>
+   <div class="chart"><canvas id="chart" role="img" aria-label="Candlestick chart"></canvas></div>
+   <div class="track" aria-hidden="true"><i class="track-base"></i><i id="trackFill" class="track-fill"></i><i class="track-flag"></i><i id="trackDot" class="track-dot"></i></div>
+   <div id="status" class="status">—</div>
+   <div class="actions">
+    <div id="tradeRow" class="trade-row">
+     <button id="buy" class="action buy" disabled data-t="buy">Buy</button>
+     <button id="sell" class="action sell" disabled data-t="sell">Sell</button>
+    </div>
+    <button id="nextBtn" class="action next hide" data-t="viewResults">View Results</button>
+   </div>
+
+   <!-- finish card + falling emoji (pointer-transparent, chart keeps running behind after a manual sell) -->
+   <div id="finish" class="finish hide" aria-live="polite">
+    <div id="emoji" class="emoji-field"></div>
+    <div id="finishCard" class="finish-card">
+     <div id="finishLabel" class="finish-label"></div>
+     <div id="finishAmount" class="finish-amount"></div>
+     <div id="finishPct" class="finish-pct"></div>
+     <div id="finishBalance" class="finish-balance"></div>
+     <div id="finishNote" class="finish-note hide"></div>
+    </div>
+   </div>
+
+   <!-- pause (tab hidden / app switched) -->
+   <div id="pauseOverlay" class="pause hide">
+    <div class="pause-card" role="dialog" aria-modal="true" aria-labelledby="pauseTitle">
+     <svg viewBox="0 0 24 24" width="30" height="30" aria-hidden="true"><path fill="currentColor" d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+     <h3 id="pauseTitle" data-t="paused">Paused</h3>
+     <p data-t="pauseBody">Your position and race timing are frozen.</p>
+     <button id="resume" class="resume" data-t="resume">Resume</button>
+    </div>
+   </div>
+
+   <!-- web tutorial -->
+   <div id="overlay" class="overlay hide">
+    <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+     <div class="dialog-pill" data-t="tutorial">QUICK TUTORIAL</div>
+     <h3 id="modalTitle"></h3>
+     <p id="modalMessage"></p>
+     <button id="advance" class="primary"></button>
+    </div>
+   </div>
+  </section>
+
+  <!-- Result: brag → hidden IQ → install or replay -->
+  <section id="result" class="result hide" aria-live="polite">
+   <img class="result-logo heartbeat" src="chart_riders_header_logo.webp" alt="Chart Riders" width="1024" height="125">
+   <img id="resultRider" class="result-rider" src="ready_closeup.webp" alt="" width="600" height="650">
+   <div id="resultPercent" class="result-percent">+0.00%</div>
+   <div id="resultBalance" class="result-balance">$10,000.00</div>
+   <p id="resultNote" class="result-note hide"></p>
+   <div class="iq">
+    <p class="iq-title" data-t="iqTitle">YOUR TRADING IQ</p>
+    <button id="slots" class="slots" type="button" data-t-label="spin" aria-label="Tap to spin"><span class="slot">?</span><span class="slot">?</span><span class="slot">?</span></button>
+    <p class="iq-hook" data-t="installPitch">Finish 10 rounds in the app to reveal it</p>
+   </div>
+   <div class="download">
+    <h2 data-t="getGame">UNLOCK YOUR TRADING IQ</h2>
+    <div id="storeButtons" class="store-buttons">
+     <a id="iosLink" class="store" href="#" aria-label="Download on the App Store">
+      <svg class="store-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg>
+      <span class="store-text"><small data-t="dlIos">Download on the</small><b>App Store</b></span>
+     </a>
+     <a id="androidLink" class="store" href="#" aria-label="Get it on Google Play">
+      <svg class="store-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6 3.6c0-1.1 1.2-1.8 2.2-1.2l13 8.4c.9.6.9 1.9 0 2.4l-13 8.4C7.2 22.2 6 21.5 6 20.4z"/></svg>
+      <span class="store-text"><small data-t="dlAndroid">GET IT ON</small><b>Google Play</b></span>
+     </a>
+    </div>
+    <p id="storeNotice" class="notice hide" data-t="storeNotice">Store link is not ready yet.</p>
+    <div class="after-actions">
+     <button id="replay" class="ghost" type="button" data-t="replay">PLAY AGAIN</button>
+     <button id="share" class="ghost" type="button" data-t="share">SHARE</button>
+    </div>
+   </div>
+  </section>
+ </main>
+
+ <footer class="footer">
+  <p data-t="disclaimer">Real historical prices from the Chart Riders app. All trades are virtual.</p>
+  <p>© 2026 Chart Riders · <a id="supportLink" href="#" data-t="support">Support &amp; Privacy</a></p>
+ </footer>
 </div>
-<section class="download" id="download">
-<h2 data-t="getGame">UNLOCK YOUR TRADING IQ</h2>
-<div class="store-buttons" id="storeButtons">
-<a id="iosLink" class="store ios-store" href="#" aria-label="Download on the App Store"><span class="store-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="1em" height="1em" fill="currentColor"><path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg></span><b>iPhone</b></a>
-<a id="androidLink" class="store android-store" href="#" aria-label="Get it on Google Play"><span class="store-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="1em" height="1em" fill="currentColor"><path d="M6 3.6c0-1.1 1.2-1.8 2.2-1.2l13 8.4c.9.6.9 1.9 0 2.4l-13 8.4C7.2 22.2 6 21.5 6 20.4z"/></svg></span><b>Android</b></a>
-</div>
-<p id="storeNotice" class="notice hide" data-t="storeNotice">Store link not configured yet.</p>
-<div class="after-actions"><button id="replay" class="ghost" data-t="replay">PLAY AGAIN</button><button id="share" class="ghost" data-t="share">SHARE</button></div>
-</section>
-</section>
-</main><footer><p data-t="disclaimer">Historical price data comes from the Chart Riders app assets. All trading is virtual.</p><p>© 2026 Chart Riders <span class="sep">·</span> <a id="supportLink" href="#" data-t="support">Support & Privacy</a></p></footer></div>
 <div id="toast" class="toast" role="status" aria-live="polite"></div>
-<script src="historical-data.js"></script><script src="config.js"></script><script src="app.js"></script></body></html>
+<script src="historical-data.js"></script>
+<script src="i18n.js"></script>
+<script src="config.js"></script>
+<script src="chart.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
