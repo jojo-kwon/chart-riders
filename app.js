@@ -7,50 +7,100 @@ const D={
  es:{eyebrow:'EL RETO DEL IQ TRADING',subhead:'Un gráfico. Una operación. Pruébalo antes de descargar.',demo:'DEMO WEB · 1 RONDA',simulation:'SIMULADO',balance:'SALDO',warmup:'30 DÍAS INICIALES',historical:'Precios históricos · datos del juego',entry:'COMPRA',return:'RENDIMIENTO',day:'DÍA',buy:'COMPRAR',sell:'VENDER',tutorial:'TUTORIAL RÁPIDO',complete:'DEMO TERMINADA',yourResult:'TU RESULTADO',iqTitle:'TU IQ DE TRADING',iqQuestion:'¿Cuál es tu IQ de trading?',installPitch:'¡Instala Chart Riders y completa 10 rondas para descubrirlo!',getGame:'DESCUBRE TU IQ',fullPitch:'10 rondas · IQ · Niveles · Clasificaciones',downloadOn:'Descargar en',getIt:'DISPONIBLE EN',storeNotice:'Enlace de tienda sin configurar.',disclaimer:'Datos históricos incluidos en el juego. Todas las operaciones son virtuales.',support:'Ayuda y privacidad',ready:'¿Listo para operar?',instruction1:'Las operaciones comienzan en 5 segundos. Pulsa COMPRAR cuando quieras.',start:'ENTENDIDO',bought:'¡Has comprado!',instruction2:'Pulsa VENDER cuando creas que es el momento adecuado.',continue:'CONTINUAR',finished:'¡Ronda terminada!',instruction3:'Consulta tu resultado. ¡Descubre tu IQ completando 10 rondas en la app!',seeResult:'VER RESULTADO',trading:'OPERANDO',holding:'POSICIÓN ABIERTA',closed:'TERMINADO',auto:'Venta automática al finalizar',noTrade:'Sin operaciones',headline1:'¿Puedes vencer',headline2:'al mercado?'},
  zh:{eyebrow:'交易 IQ 挑戰',subhead:'一張走勢圖，一次交易。下載前先試玩。',demo:'網頁試玩 · 1 回合',simulation:'模擬交易',balance:'餘額',warmup:'30 天預熱',historical:'真實歷史日線 · 遊戲內建資料',entry:'買入價',return:'報酬率',day:'第幾天',buy:'買入',sell:'賣出',tutorial:'快速教學',complete:'試玩完成',yourResult:'交易結果',iqTitle:'你的交易 IQ',iqQuestion:'你的交易 IQ 是多少？',installPitch:'安裝 Chart Riders，完成 10 回合就能揭曉！',getGame:'解鎖你的交易 IQ',fullPitch:'10 回合 · 交易 IQ · 階級 · 排行榜',downloadOn:'下載於',getIt:'立即下載',storeNotice:'尚未設定商店連結。',disclaimer:'使用遊戲內建的歷史股價資料。所有交易均為虛擬交易。',support:'支援與隱私',ready:'準備好交易了嗎？',instruction1:'5 秒後開始交易。請在你認為適合的時機按下買入。',start:'確認',bought:'買入成功！',instruction2:'請在你認為適合的時機按下賣出。',continue:'繼續',finished:'回合結束！',instruction3:'查看你的交易結果。完成正式版 10 回合後才能揭曉交易 IQ！',seeResult:'查看結果',trading:'交易中',holding:'持倉中',closed:'已結束',auto:'走勢圖結束後自動賣出',noTrade:'未交易',headline1:'你能擊敗',headline2:'市場嗎？'}
 };
-const $=id=>document.getElementById(id);let lang='en',phase='intro',stock,candles=[],cursor=0,entry=null,exit=null,tradeTimer=null,autoTimer=null,spinTimer=null,modalAction=null,tickIndex=0,tickPath=[],partial=null,shown=[],livePrice=0;
-const stocks=[{name:'Apple',ticker:'AAPL',start:172,seed:11},{name:'NVIDIA',ticker:'NVDA',start:135,seed:43},{name:'Tesla',ticker:'TSLA',start:265,seed:87}];
-function randGen(seed){let v=seed;return()=>{v=(1664525*v+1013904223)>>>0;return v/4294967296;};}
-function makeCandles(s){let r=randGen(s.seed+(Math.floor(Math.random()*1000)*179));let p=s.start;const out=[];for(let i=0;i<90;i++){let o=p;let drift=Math.sin(i/7+s.seed)*.013+(r()-.5)*.047;let c=Math.max(1,o*(1+drift));let h=Math.max(o,c)*(1+r()*.016),l=Math.min(o,c)*(1-r()*.016);out.push({o,c,h,l});p=c;}return out;}
+const EXTRA={
+ en:{round:'ROUND',sReady:'Ready',sWarm:'Warm-up',sTrading:'Trading',sHolding:'Holding',sDone:'Finished',replay:'PLAY AGAIN',share:'SHARE',copied:'Copied to clipboard',shareText:'I scored {r} in one round of Chart Riders. Can you beat the market?'},
+ ko:{round:'라운드',sReady:'준비',sWarm:'차트 살펴보는 중',sTrading:'매매 중',sHolding:'보유 중',sDone:'매매 종료',replay:'한 판 더',share:'결과 공유',copied:'공유 문구가 복사되었습니다',shareText:'차트라이더스 1판 결과 {r}. 너는 시장을 이길 수 있어?'},
+ ja:{round:'ラウンド',sReady:'準備',sWarm:'ウォームアップ',sTrading:'取引中',sHolding:'保有中',sDone:'終了',replay:'もう一回',share:'シェア',copied:'コピーしました',shareText:'Chart Ridersで1ラウンド {r}。あなたはマーケットに勝てる？'},
+ fr:{round:'MANCHE',sReady:'Prêt',sWarm:'Échauffement',sTrading:'En cours',sHolding:'Position ouverte',sDone:'Terminé',replay:'REJOUER',share:'PARTAGER',copied:'Copié',shareText:"J'ai fait {r} en une manche de Chart Riders. Et vous, pouvez-vous battre le marché ?"},
+ es:{round:'RONDA',sReady:'Listo',sWarm:'Calentamiento',sTrading:'Operando',sHolding:'Posición abierta',sDone:'Terminado',replay:'JUGAR OTRA VEZ',share:'COMPARTIR',copied:'Copiado',shareText:'Hice {r} en una ronda de Chart Riders. ¿Puedes vencer al mercado?'},
+ zh:{round:'回合',sReady:'準備',sWarm:'預熱中',sTrading:'交易中',sHolding:'持倉中',sDone:'已結束',replay:'再玩一次',share:'分享結果',copied:'已複製',shareText:'我在 Chart Riders 一回合拿到 {r}。你能擊敗市場嗎？'}
+};
+for(const k in EXTRA)Object.assign(D[k],EXTRA[k]);
+
+const $=id=>document.getElementById(id);
+const CFG=window.CHART_RIDERS_CONFIG||{};
+let lang='en',phase='intro',stock,candles=[],cursor=0,entry=null,exit=null,tradeTimer=null,spinTimer=null,modalAction=null,tickIndex=0,tickPath=[],partial=null,shown=[],livePrice=0,firstRun=true;
+const stocks=[{name:'Apple',ticker:'AAPL'},{name:'NVIDIA',ticker:'NVDA'},{name:'Tesla',ticker:'TSLA'}];
+const WARM=30,TOTAL=120,TRADE_DAYS=TOTAL-WARM;
+
+/* ---------- analytics (GA4 optional via config.gaId) ---------- */
+(function initAnalytics(){
+ if(!CFG.gaId||!/^G-[A-Z0-9]+$/.test(CFG.gaId))return;
+ const s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id='+CFG.gaId;document.head.appendChild(s);
+ window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments);};gtag('js',new Date());gtag('config',CFG.gaId);
+})();
+function track(name,params={}){try{if(window.gtag)gtag('event',name,{lang,...params});}catch(_){}}
+
+/* ---------- helpers ---------- */
 function t(key){return (D[lang]||D.en)[key]||D.en[key]||key;}
-function updateLang(next, remember=false){lang=D[next]?next:'en';if(remember){try{localStorage.setItem('chartRidersDemoLanguage',lang);}catch(_){}}document.documentElement.lang=lang;$('lang').value=lang;document.querySelectorAll('[data-t]').forEach(el=>el.textContent=t(el.dataset.t));document.querySelector('h1').innerHTML=`${t('headline1')} <em>${t('headline2')}</em>`;if(phase==='intro')showModal('ready','instruction1','start',startCountdown);else if(phase==='bought')showModal('bought','instruction2','continue',resumeAfterBuy);else if(phase==='summary')showModal('finished','instruction3','seeResult',revealResult);updateStats();}
+function money(x){return '$'+x.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});}
+function pct(x){return (x>=0?'+':'')+x.toFixed(2)+'%';}
+function liveReturn(){if(!entry)return 0;return exit?calcReturn():(livePrice/entry.price-1)*100;}
+function calcReturn(){return entry&&exit?(exit.price/entry.price-1)*100:0;}
+function detectOS(){const ua=navigator.userAgent||'';if(/android/i.test(ua))return 'android';if(/iphone|ipad|ipod/i.test(ua)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1))return 'ios';return 'other';}
+
+/* ---------- language ---------- */
+function updateLang(next,remember=false){
+ lang=D[next]?next:'en';
+ if(remember){try{localStorage.setItem('chartRidersDemoLanguage',lang);}catch(_){}}
+ document.documentElement.lang=lang;$('lang').value=lang;
+ document.querySelectorAll('[data-t]').forEach(el=>el.textContent=t(el.dataset.t));
+ document.querySelector('h1').innerHTML=`${t('headline1')} <em>${t('headline2')}</em>`;
+ if(phase==='intro')showModal('ready','instruction1','start',startCountdown);
+ else if(phase==='bought')showModal('bought','instruction2','continue',resumeAfterBuy);
+ else if(phase==='summary')showModal('finished','instruction3','seeResult',revealResult);
+ else if(phase==='result')renderResultNote();
+ updateStats();
+}
+
+/* ---------- modal ---------- */
 function showModal(title,message,button,fn){const isEnd=title==='finished';$('modalTitle').textContent=t(title);$('modalMessage').textContent=isEnd?'':t(message);$('advance').textContent=t(button);$('overlay').classList.toggle('end-only',isEnd);modalAction=fn;$('overlay').classList.remove('hide');}
 function hideModal(){$('overlay').classList.add('hide');}
-function clearClocks(){clearInterval(tradeTimer);clearInterval(autoTimer);tradeTimer=null;autoTimer=null;}
-function chooseStock(){stock=stocks[Math.floor(Math.random()*stocks.length)];const windows=(window.CHART_RIDERS_HISTORY||{})[stock.ticker]||[];if(!windows.length)throw Error('Historical data missing: '+stock.ticker);candles=windows[Math.floor(Math.random()*windows.length)];cursor=0;tickIndex=0;tickPath=[];partial=null;shown=[];livePrice=candles[0].o;entry=exit=null;$('stockName').innerHTML=`${stock.name} <span>${stock.ticker} · NASDAQ</span>`;updateStats();drawChart();}
+function clearClocks(){clearInterval(tradeTimer);tradeTimer=null;}
+
+/* ---------- game ---------- */
+function chooseStock(){
+ stock=stocks[Math.floor(Math.random()*stocks.length)];
+ const windows=(window.CHART_RIDERS_HISTORY||{})[stock.ticker]||[];
+ if(!windows.length)throw Error('Historical data missing: '+stock.ticker);
+ candles=windows[Math.floor(Math.random()*windows.length)];
+ cursor=0;tickIndex=0;tickPath=[];partial=null;shown=[];livePrice=candles[0].o;entry=exit=null;
+ $('stockName').innerHTML=`${stock.name} <span>${stock.ticker} · NASDAQ</span>`;
+ $('nativeDate').textContent='—';
+ updateStats();drawChart();
+}
 function prepareCandle(){
- if(cursor>=120)return;
- const c=candles[cursor], extremes=Math.random()<.5?[c.h,c.l]:[c.l,c.h],path=[c.o,...extremes,c.c];
+ if(cursor>=TOTAL)return;
+ const c=candles[cursor],extremes=Math.random()<.5?[c.h,c.l]:[c.l,c.h],path=[c.o,...extremes,c.c];
  tickPath=[];
  for(let i=0;i<3;i++)for(let step=1;step<=3;step++)tickPath.push(path[i]+(path[i+1]-path[i])*step/3);
  tickIndex=0;livePrice=c.o;
  partial={o:c.o,h:c.o,l:c.o,c:c.o,v:c.v||0,date:c.date};
 }
 function advanceTick(){
- if(cursor>=120)return;
+ if(cursor>=TOTAL)return;
  if(!partial)prepareCandle();
  const v=tickPath[tickIndex++];
  livePrice=v;partial.c=v;partial.h=Math.max(partial.h,v);partial.l=Math.min(partial.l,v);
- if(tickIndex>=9){
-  shown.push(candles[cursor]);cursor++;partial=null;
-  if(cursor<120)prepareCandle();
- }
+ if(tickIndex>=9){shown.push(candles[cursor]);cursor++;partial=null;if(cursor<TOTAL)prepareCandle();}
 }
 function startCountdown(){
  hideModal();clearClocks();phase='countdown';$('buy').disabled=true;$('sell').disabled=true;
  cursor=0;shown=[];partial=null;prepareCandle();
- let start=performance.now(),last=-1;
+ track(firstRun?'demo_start':'demo_replay_start');
+ const start=performance.now();let last=-1;
  $('countdown').classList.remove('hide');
  tradeTimer=setInterval(()=>{
   const elapsed=performance.now()-start;
   // 270 logical ticks over five seconds, as in Flutter's 30-day prerace.
   const target=Math.min(270,Math.floor(elapsed*270/5000));
-  while(shown.length*9+tickIndex<target&&cursor<30)advanceTick();
+  while(shown.length*9+tickIndex<target&&cursor<WARM)advanceTick();
   const seconds=Math.max(0,5-Math.floor(elapsed/1000));
   if(seconds!==last){$('countdown').textContent=seconds;last=seconds;}
   drawChart();updateStats();
-  if(elapsed>=5000||cursor>=30){
+  if(elapsed>=5000||cursor>=WARM){
    clearInterval(tradeTimer);tradeTimer=null;
-   while(cursor<30)advanceTick();
+   while(cursor<WARM)advanceTick();
    $('countdown').classList.add('hide');phase='trading';$('buy').disabled=false;runChart();
   }
  },16);
@@ -60,27 +110,20 @@ function runChart(){
  // Flutter: 2 logical ticks each 16ms frame, 9 ticks per candle.
  let last=performance.now(),acc=0;
  tradeTimer=setInterval(()=>{
-  if(!['trading','holding','postSell'].includes(phase))return;
+  if(!['trading','holding'].includes(phase))return;
   const now=performance.now();acc+=Math.min(now-last,80);last=now;
   let frames=0;
-  while(acc>=16&&frames++<5&&cursor<120){
-   acc-=16;
-   advanceTick();if(cursor<120)advanceTick();
-  }
+  while(acc>=16&&frames++<5&&cursor<TOTAL){acc-=16;advanceTick();if(cursor<TOTAL)advanceTick();}
   drawChart();updateStats();
-  if(cursor>=120){
-   clearInterval(tradeTimer);tradeTimer=null;
-   if(phase==='holding')finish(true);
-   else if(phase==='postSell'){phase='summary';showModal('finished','instruction3','seeResult',revealResult);}
-   else finish(false);
-  }
+  if(cursor>=TOTAL){clearInterval(tradeTimer);tradeTimer=null;finish(phase==='holding');}
  },16);
 }
 function buy(){
- if(phase!=='trading'||cursor>=120)return;
- entry={price:livePrice,day:Math.max(1,cursor-29)};
+ if(phase!=='trading'||cursor>=TOTAL)return;
+ entry={price:livePrice,day:Math.max(1,cursor-WARM+1)};
  phase='bought';$('buy').disabled=true;$('sell').disabled=true;
  clearInterval(tradeTimer);updateStats();drawChart();
+ track('demo_buy',{day:entry.day});
  showModal('bought','instruction2','continue',resumeAfterBuy);
 }
 function resumeAfterBuy(){hideModal();phase='holding';$('sell').disabled=false;runChart();}
@@ -88,110 +131,205 @@ function sell(){if(phase!=='holding'||entry===null)return;finish(false);}
 function finish(automatic){
  if(['summary','result'].includes(phase))return;
  clearClocks();
- exit=entry!==null?{price:livePrice,day:Math.max(1,cursor-29),automatic}:null;
+ exit=entry!==null?{price:livePrice,day:Math.max(1,cursor-WARM),automatic}:null;
  $('buy').disabled=true;$('sell').disabled=true;
- updateStats();drawChart();
- // Flutter keeps playing the chart after a manual sale; demo result can be reviewed immediately.
- phase='summary';showModal('finished','instruction3','seeResult',revealResult);
+ if(exit)track(automatic?'demo_auto_sell':'demo_sell',{return_pct:+calcReturn().toFixed(2)});else track('demo_no_trade');
+ phase='summary';updateStats();drawChart();
+ showModal('finished','instruction3','seeResult',revealResult);
 }
-function calcReturn(){return entry&&exit?(exit.price/entry.price-1)*100:0;}
-function cash(){return 10000*(1+calcReturn()/100);}
-function money(x){return '$'+x.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});}
-function updateStats(){const current=partial||shown[shown.length-1]||candles[0];if(!current)return;$('price').textContent=money(livePrice);$('balance').textContent=money(phase==='result'?cash():10000);$('entry').textContent=entry?money(entry.price):'—';$('pnl').textContent=entry?((exit?calcReturn():(livePrice/entry.price-1)*100)>=0?'+':'')+(exit?calcReturn():(livePrice/entry.price-1)*100).toFixed(2)+'%':'—';$('tradeDay').textContent=String(Math.max(0,cursor-30+(partial&&cursor>=30?1:0)));$('dayCount').textContent=Math.max(0,cursor-30+(partial&&cursor>=30?1:0))+' / 90';$('chartStatus').textContent=phase==='intro'||phase==='countdown'?'Warm-up':phase==='summary'||phase==='result'?'Finished':entry?'Holding':'Trading';$('nativeBalance').textContent=money(phase==='result'?cash():10000).replace('.00','');$('nativeReturn').textContent=entry?((exit?calcReturn():(livePrice/entry.price-1)*100).toFixed(2)+'%'):'0.00%';$('progressFill').style.width=(Math.max(0,Math.min(100,cursor/90*100)))+'%';$('progressCaption').textContent=phase==='countdown'?'Starts in 5s':phase==='intro'?'Ready':phase==='summary'?'Finished':phase==='result'?'Finished':entry?'Holding':'Trading';}
-function revealResult(){hideModal();phase='result';const r=calcReturn();$('resultPercent').textContent=(r>=0?'+':'')+r.toFixed(2)+'%';$('resultPercent').classList.toggle('negative',r<0);$('resultBalance').textContent=money(cash());$('balance').textContent=money(cash());$('result').classList.remove('hide');document.body.classList.add('show-result');startSlots();}
+function cash(){return 10000*(1+liveReturn()/100);}
+
+function statusText(){
+ if(phase==='intro')return t('sReady');
+ if(phase==='countdown')return t('sWarm');
+ if(phase==='summary'||phase==='result')return t('sDone');
+ return entry?t('sHolding'):t('sTrading');
+}
+function updateStats(){
+ const r=liveReturn();
+ $('roundLabel').textContent=t('round');
+ $('chartStatus').textContent=statusText();
+ $('progressCaption').textContent=statusText();
+ $('nativeBalance').textContent=money(cash());
+ const ret=$('nativeReturn');ret.textContent=entry?pct(r):'0.00%';
+ ret.classList.toggle('up',entry&&r>0);ret.classList.toggle('down',entry&&r<0);
+ const progress=Math.max(0,Math.min(1,(cursor-WARM)/TRADE_DAYS));
+ $('progressFill').style.width=(progress*100)+'%';
+}
+
+/* ---------- result ---------- */
+function renderResultNote(){
+ const note=$('resultNote');
+ if(!entry){note.textContent=t('noTrade');note.classList.remove('hide');}
+ else if(exit&&exit.automatic){note.textContent=t('auto');note.classList.remove('hide');}
+ else{note.textContent='';note.classList.add('hide');}
+}
+function revealResult(){
+ hideModal();phase='result';
+ const r=calcReturn();
+ $('resultPercent').textContent=pct(r);
+ $('resultPercent').classList.toggle('negative',r<0);
+ $('resultBalance').textContent=money(cash());
+ renderResultNote();updateStats();
+ $('result').classList.remove('hide');document.body.classList.add('show-result');
+ $('result').scrollTop=0;
+ if(window.innerWidth>700)$('result').scrollIntoView({behavior:'smooth',block:'start'});
+ startSlots();
+ track('demo_result',{return_pct:+r.toFixed(2),traded:!!entry});
+}
 function startSlots(){clearInterval(spinTimer);let frame=0;const slots=Array.from(document.querySelectorAll('.slot'));spinTimer=setInterval(()=>{frame++;slots.forEach((slot,i)=>{slot.textContent=(frame+i*3)%13<9?String((frame*7+i*3)%10):'?';});},85);}
+function replay(){
+ clearInterval(spinTimer);clearClocks();
+ $('result').classList.add('hide');document.body.classList.remove('show-result');
+ $('storeNotice').classList.add('hide');
+ firstRun=false;phase='intro';
+ chooseStock();resizeCanvas();
+ track('demo_replay');
+ window.scrollTo({top:0});
+ startCountdown();
+}
+
+/* ---------- share ---------- */
+function loadImg(src){return new Promise((res,rej)=>{const i=new Image();i.onload=()=>res(i);i.onerror=rej;i.src=src;});}
+async function makeShareImage(){
+ const W=1080,H=1350,c=document.createElement('canvas');c.width=W;c.height=H;const x=c.getContext('2d');
+ const g=x.createRadialGradient(W/2,380,40,W/2,520,900);g.addColorStop(0,'#24314a');g.addColorStop(1,'#101012');
+ x.fillStyle=g;x.fillRect(0,0,W,H);
+ const [logo,cat]=await Promise.all([loadImg('chart_riders_header_logo.webp'),loadImg('ready_closeup.webp')]);
+ const lw=760,lh=lw*logo.height/logo.width;x.drawImage(logo,(W-lw)/2,90,lw,lh);
+ const cw=440,ch=Math.round(cw*cat.height/cat.width);
+ // fade the cropped bottom edge of the character with an alpha mask
+ const off=document.createElement('canvas');off.width=cw;off.height=ch;const o=off.getContext('2d');
+ o.drawImage(cat,0,0,cw,ch);o.globalCompositeOperation='destination-in';
+ const fade=o.createLinearGradient(0,0,0,ch);fade.addColorStop(0,'#000');fade.addColorStop(.74,'#000');fade.addColorStop(1,'rgba(0,0,0,0)');
+ o.fillStyle=fade;o.fillRect(0,0,cw,ch);
+ x.drawImage(off,(W-cw)/2,210);
+ const r=calcReturn();
+ x.textAlign='center';x.textBaseline='alphabetic';
+ const font='-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR","Segoe UI",Arial,sans-serif';
+ x.fillStyle=r<0?'#e07a8f':'#4fd1a5';x.font=`900 190px ${font}`;x.fillText(pct(r),W/2,920);
+ x.fillStyle='#f5f7fc';x.font=`800 64px ${font}`;x.fillText(money(cash()),W/2,1015);
+ const d=(candles[WARM]||candles[0]).date||'';
+ x.fillStyle='#9b9ba3';x.font=`600 40px ${font}`;x.fillText(`${stock.name} (${stock.ticker}) · ${d.slice(0,4)}`,W/2,1085);
+ x.fillStyle='#e6bc55';x.font=`900 56px ${font}`;x.fillText(`${t('headline1')} ${t('headline2')}`,W/2,1200,W-120);
+ x.fillStyle='#6f6f78';x.font=`600 32px ${font}`;x.fillText('chart riders',W/2,1290);
+ return new Promise(res=>c.toBlob(res,'image/png'));
+}
+async function share(){
+ const url=CFG.siteUrl||location.href.split('#')[0];
+ const text=t('shareText').replace('{r}',pct(calcReturn()));
+ track('demo_share_click');
+ try{
+  if(navigator.share){
+   let data={title:'Chart Riders',text,url};
+   try{const blob=await makeShareImage();const file=new File([blob],'chart-riders-result.png',{type:'image/png'});if(navigator.canShare&&navigator.canShare({files:[file]}))data={files:[file],text:text+'\n'+url};}catch(_){}
+   await navigator.share(data);track('demo_share_done');return;
+  }
+ }catch(e){if(e&&e.name==='AbortError')return;}
+ try{await navigator.clipboard.writeText(text+'\n'+url);toast(t('copied'));track('demo_share_copy');}catch(_){toast(text);}
+}
+function toast(msg){const el=$('toast');el.textContent=msg;el.classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>el.classList.remove('show'),2200);}
+
+/* ---------- chart ---------- */
+let W=360,H=300,DPR=1;
+function resizeCanvas(){
+ const canvas=$('chart');DPR=Math.min(window.devicePixelRatio||1,3);
+ W=Math.max(200,canvas.clientWidth||360);H=canvas.clientHeight;if(!H||H<80)H=Math.round(W*.72);
+ canvas.width=Math.round(W*DPR);canvas.height=Math.round(H*DPR);
+ drawChart();
+}
 function drawChart(){
  const dateCandle=partial||shown[shown.length-1];
- if(dateCandle&&dateCandle.date){const d=dateCandle.date;$('chartDate').textContent='';$('nativeDate').textContent=`${d.slice(0,4)}.${d.slice(4,6)}.${d.slice(6,8)}`;}else $('chartDate').textContent='';
+ if(dateCandle&&dateCandle.date){const d=dateCandle.date;$('nativeDate').textContent=`${d.slice(0,4)}.${d.slice(4,6)}.${d.slice(6,8)}`;}
  const canvas=$('chart'),ctx=canvas.getContext('2d');
- const W=canvas.width,H=canvas.height;
- ctx.clearRect(0,0,W,H);
- // Flutter's CandleChart only receives completed and currently forming candles.
+ ctx.setTransform(DPR,0,0,DPR,0,0);ctx.clearRect(0,0,W,H);
  const all=[...shown,...(partial?[partial]:[])];
  if(!all.length)return;
  const recent=all.slice(-60);
  const hi=Math.max(...recent.map(c=>c.h)),lo=Math.min(...recent.map(c=>c.l));
- const span=Math.max(hi-lo,hi*.02),pad=span*.25;
- const top=18,bottom=H*.75;
+ const span=Math.max(hi-lo,hi*.02),pad=span*.12;
+ const axisW=46,left=4,right=W-axisW;
+ const top=10,bottom=H*.76;
  const y=p=>bottom-(p-(lo-pad))/(span+2*pad)*(bottom-top);
- const slots=60,step=(W-88)/(slots+2);
- const first=Math.max(0,all.length-60),left=8;
+ const slots=60,step=(right-left)/(slots+1);
+ const first=Math.max(0,all.length-60);
+ ctx.font='11px -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif';ctx.textAlign='left';
  for(let i=0;i<=4;i++){
-  const v=lo-pad+(span+2*pad)*i/4,yy=y(v);
-  ctx.strokeStyle='#24324a';ctx.lineWidth=1;ctx.setLineDash([]);
-  ctx.beginPath();ctx.moveTo(left,yy);ctx.lineTo(W-64,yy);ctx.stroke();
-  ctx.fillStyle='#8fa0b6';ctx.font='12px Arial';ctx.textAlign='left';
-  ctx.fillText(v.toFixed(v<10?2:1),W-59,yy+4);
+  const v=lo-pad+(span+2*pad)*i/4,yy=Math.round(y(v))+.5;
+  ctx.strokeStyle='#24242b';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(left,yy);ctx.lineTo(right,yy);ctx.stroke();
+  ctx.fillStyle='#8b8a92';ctx.fillText(v.toFixed(v<100?2:1),right+5,yy+4);
  }
  const xAt=i=>left+(i-first+.5)*step;
+ const bodyW=Math.max(1.5,step*.62);
  for(let i=first;i<all.length;i++){
   const c=all[i],x=xAt(i),up=c.c>=c.o;
-  const color=up?'#58b79b':'#bc7e89';
-  ctx.strokeStyle=ctx.fillStyle=color;ctx.lineWidth=1.5;
+  ctx.strokeStyle=ctx.fillStyle=up?'#58b79b':'#bc7e89';ctx.lineWidth=1;
   ctx.beginPath();ctx.moveTo(x,y(c.h));ctx.lineTo(x,y(c.l));ctx.stroke();
-  const yy=y(Math.max(c.o,c.c)),hh=Math.max(1.5,y(Math.min(c.o,c.c))-yy);
-  ctx.fillRect(x-step*.31,yy,Math.max(2,step*.62),hh);
+  const yy=y(Math.max(c.o,c.c)),hh=Math.max(1,y(Math.min(c.o,c.c))-yy);
+  ctx.fillRect(x-bodyW/2,yy,bodyW,hh);
  }
- // Original uses moving averages and volume bars, not a full-height buy-day line.
  for(const [n,color] of [[5,'#e9c55e'],[20,'#78a6d5']]){
-  ctx.beginPath();ctx.strokeStyle=color;ctx.lineWidth=1.4;ctx.setLineDash([]);
-  let begun=false;
-  for(let i=first;i<all.length;i++){
-   if(i<n-1)continue;
-   const ma=all.slice(i-n+1,i+1).reduce((sum,c)=>sum+c.c,0)/n;
-   const x=xAt(i);
+  ctx.beginPath();ctx.strokeStyle=color;ctx.lineWidth=1.2;let begun=false;
+  for(let i=Math.max(first,n-1);i<all.length;i++){
+   const ma=all.slice(i-n+1,i+1).reduce((s,c)=>s+c.c,0)/n,x=xAt(i);
    if(!begun){ctx.moveTo(x,y(ma));begun=true;}else ctx.lineTo(x,y(ma));
   }
   if(begun)ctx.stroke();
  }
- // Trade markers: original horizontal price-level B/S markers at the chart edge.
  function marker(trade,label,color){
   if(!trade||trade.price<lo-pad||trade.price>hi+pad)return;
   const yy=y(trade.price);
-  ctx.strokeStyle=color;ctx.lineWidth=1.4;ctx.setLineDash([5,4]);
-  ctx.beginPath();ctx.moveTo(left,yy);ctx.lineTo(W-64,yy);ctx.stroke();ctx.setLineDash([]);
-  ctx.fillStyle=color;ctx.font='bold 13px Arial';ctx.textAlign='left';ctx.fillText(label,W-55,yy-4);
+  ctx.strokeStyle=color;ctx.lineWidth=1.2;ctx.setLineDash([5,4]);
+  ctx.beginPath();ctx.moveTo(left,yy);ctx.lineTo(right,yy);ctx.stroke();ctx.setLineDash([]);
+  ctx.fillStyle=color;ctx.font='bold 12px -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif';ctx.fillText(label,right+5,yy-5);
  }
  marker(entry,'B','#4fba8a');marker(exit,'S','#d9697d');
- const volumeTop=H*.82,volumeBottom=H-12;
+ const volumeTop=H*.82,volumeBottom=H-4;
  const maxVolume=Math.max(1,...recent.map(c=>c.v||0));
  for(let i=first;i<all.length;i++){
   const c=all[i],x=xAt(i);
   ctx.fillStyle=c.c>=c.o?'#3b6258':'#684c56';
-  const height=(c.v||0)/maxVolume*(volumeBottom-volumeTop);
-  ctx.fillRect(x-step*.31,volumeBottom-height,Math.max(2,step*.62),height);
+  const h=(c.v||0)/maxVolume*(volumeBottom-volumeTop);
+  ctx.fillRect(x-bodyW/2,volumeBottom-h,bodyW,h);
  }
- ctx.strokeStyle='#344158';ctx.beginPath();ctx.moveTo(8,H*.84);ctx.lineTo(W-64,H*.84);ctx.stroke();
- // Dates along the horizontal axis, spaced to avoid crowding.
- ctx.fillStyle='#8495ac';ctx.font='11px Arial';ctx.textAlign='center';
- const dateStep=Math.max(10,Math.ceil(recent.length/4));
- for(let i=first;i<all.length;i++){
-  if((i-first)%dateStep!==0 && i!==all.length-1)continue;
-  const d=all[i].date;if(!d)continue;
-  const x=xAt(i);if(x>W-95||x<24)continue;
-  // Native game shows current date above the chart, not axis dates.
- }
+ ctx.strokeStyle='#2c2c33';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(left,Math.round(H*.79)+.5);ctx.lineTo(right,Math.round(H*.79)+.5);ctx.stroke();
+}
 
+/* ---------- links ---------- */
+function setupLinks(){
+ const os=detectOS();
+ document.body.dataset.os=os;
+ const map=[['iosLink','iosUrl','ios'],['androidLink','androidUrl','android']];
+ map.forEach(([id,key,store])=>{
+  const el=$(id),url=CFG[key];
+  if(url&&/^https:\/\//.test(url)){el.href=url;el.target='_blank';el.rel='noopener noreferrer';el.addEventListener('click',()=>track('store_click',{store}));}
+  else el.addEventListener('click',e=>{e.preventDefault();$('storeNotice').classList.remove('hide');});
+ });
+ if(os==='ios')$('androidLink').classList.add('hide');
+ if(os==='android')$('iosLink').classList.add('hide');
+ if(os!=='other')$('storeButtons').classList.add('single');
+ const sup=$('supportLink');
+ if(CFG.supportUrl&&/^https:\/\//.test(CFG.supportUrl)){sup.href=CFG.supportUrl;sup.target='_blank';sup.rel='noopener noreferrer';}
+ else{sup.classList.add('hide');document.querySelector('footer .sep').classList.add('hide');}
 }
-function setupLinks(){const cfg=window.CHART_RIDERS_CONFIG||{};[['iosLink','iosUrl'],['androidLink','androidUrl'],['supportLink','supportUrl']].forEach(([id,key])=>{const el=$(id);const url=cfg[key];if(url&&/^https:\/\//.test(url)){el.href=url;el.target='_blank';el.rel='noopener noreferrer';}else{el.addEventListener('click',e=>{e.preventDefault();$('storeNotice').classList.remove('hide');if(id==='supportLink')$('storeNotice').scrollIntoView({behavior:'smooth'});});}});}
-$('advance').addEventListener('click',()=>{if(modalAction)modalAction();});$('buy').addEventListener('click',buy);$('sell').addEventListener('click',sell);$('lang').addEventListener('change',e=>updateLang(e.target.value,true));
+
+/* ---------- boot ---------- */
+$('advance').addEventListener('click',()=>{if(modalAction)modalAction();});
+$('buy').addEventListener('click',buy);$('sell').addEventListener('click',sell);
+$('replay').addEventListener('click',replay);$('share').addEventListener('click',share);
+$('lang').addEventListener('change',e=>{updateLang(e.target.value,true);track('language_change');});
 function detectBrowserLanguage(){
-  // Use the user's preferred language order, not IP/geolocation.
-  const preferences=(navigator.languages&&navigator.languages.length?navigator.languages:[navigator.language||'en']);
-  for(const raw of preferences){
-    const code=String(raw||'').toLowerCase().replace(/_/g,'-');
-    if(code==='ko'||code.startsWith('ko-'))return 'ko';
-    if(code==='en'||code.startsWith('en-'))return 'en';
-    if(code==='ja'||code.startsWith('ja-'))return 'ja';
-    if(code==='fr'||code.startsWith('fr-'))return 'fr';
-    if(code==='es'||code.startsWith('es-'))return 'es';
-    // Traditional Chinese only; simplified Chinese is not offered in the demo.
-    if(/^zh-(tw|hk|mo)(-|$)/.test(code)||/^zh-hant(-|$)/.test(code))return 'zh';
-  }
-  return 'en';
+ // Use the user's preferred language order, not IP/geolocation.
+ const preferences=(navigator.languages&&navigator.languages.length?navigator.languages:[navigator.language||'en']);
+ for(const raw of preferences){
+  const code=String(raw||'').toLowerCase().replace(/_/g,'-');
+  for(const l of ['ko','en','ja','fr','es'])if(code===l||code.startsWith(l+'-'))return l;
+  // Traditional Chinese only; simplified Chinese is not offered in the demo.
+  if(/^zh-(tw|hk|mo)(-|$)/.test(code)||/^zh-hant(-|$)/.test(code))return 'zh';
+ }
+ return 'en';
 }
-function initialLanguage(){
-  try{const saved=localStorage.getItem('chartRidersDemoLanguage');if(saved&&D[saved])return saved;}catch(_){}
-  return detectBrowserLanguage();
-}
-chooseStock();setupLinks();updateLang(initialLanguage());
+function initialLanguage(){try{const saved=localStorage.getItem('chartRidersDemoLanguage');if(saved&&D[saved])return saved;}catch(_){}return detectBrowserLanguage();}
+if('ResizeObserver' in window)new ResizeObserver(()=>resizeCanvas()).observe($('chart'));else window.addEventListener('resize',resizeCanvas);
+chooseStock();setupLinks();updateLang(initialLanguage());resizeCanvas();
